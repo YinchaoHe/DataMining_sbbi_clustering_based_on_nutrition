@@ -1,4 +1,4 @@
-Recipe_ID,calories,Total Fat,Saturated Fat,Cholesterol,Sodium,Potassium,Total Carbohydrates,Dietary Fiber,Protein,Sugars,Vitamin A,Vitamin C,Calcium,Iron,Thiamin,Niacin,Vitamin B6,Magnesium,Folate
+Recipe_ID,calories,Total_Fat,Saturated_Fat,Cholesterol,Sodium,Potassium,Total_Carbohydrates,Dietary Fiber,Protein,Sugars,Vitamin_A,Vitamin C,Calcium,Iron,Thiamin,Niacin,Vitamin B6,Magnesium,Folate
 83352,435,25,4.0,98,88,896,12.8,2.9,36.8,5,859,100,83,2,0,2,0,35,27
 143002,423,19.9,13.0,0,510,859,53.6,12.6,12.4,5,3850,30,109,6,0,4,1,88,96
 239699,377,35.5,19.0,286,203,180,4,0.8,12.3,1,1324,1,210,2,0,3,0,24,32

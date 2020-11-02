@@ -5,6 +5,9 @@ import json
 import os
 import shutil
 
+import pandas as pd
+
+
 def extract_text_files(country):
     os.system("find . -name original_recipes_info > re_info_path.txt")
     try:
@@ -111,6 +114,8 @@ def nutrition_json2cvs(country):
                         recipe['nutrition']['calories'] = 100000000
                     dict_data.append(recipe['nutrition'])
 
+            new_csv_columns =  ['Recipe_ID', 'calories', 'TotalFat', 'SaturatedFat', 'Cholesterol', 'Sodium', 'Potassium','TotalCarbohydrates', 'DietaryFiber', 'Protein', 'Sugars', 'VitaminA', 'VitaminC', 'Calcium', 'Iron', 'Thiamin', 'Niacin', 'VitaminB6', 'Magnesium', 'Folate']
+
             csv_file =  country + '/' + country + "_recipes_nutrition.csv"
             if os.path.isfile(csv_file):
                 try:
@@ -127,6 +132,9 @@ def nutrition_json2cvs(country):
                         writer.writeheader()
                         for data in dict_data:
                             writer.writerow(data)
+                    df = pd.read_csv(csv_file, header=0)
+                    df.columns = new_csv_columns
+                    df.to_csv(csv_file, index=False)
                 except IOError:
                     print("I/O error")
 
