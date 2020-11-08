@@ -9,13 +9,9 @@ from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
-import pingouin as pg
+import data_statistics
 
-def recipes_heatmap(nutrition_data):
-    g = sns.clustermap(nutrition_data, standard_scale=1, method="average")
-    plt.title('heatmap')
 
-    plt.show()
 
 def recipes_DBSCAN(nutrition_data):
     scaled_data = StandardScaler().fit_transform(nutrition_data)
@@ -115,23 +111,23 @@ def recipes_KMean(nutrition_data, k):
     fig1 = plt.figure(figsize=(20, 7))
     ax1_2 = fig1.add_subplot(221)
     ax1_2.set_xlabel('Principal Component 1', fontsize=15)
-    ax1_2.set_ylabel('Principal Component 2', fontsize=15)
-    ax1_2.set_title("Clusters determined by DBSCAN", fontsize=20)
-    ax1_2.scatter(principalComponents[:, 0], principalComponents[:, 1], c=y_pred, cmap='Paired')
+    ax1_2.set_ylabel('Principal Component 3', fontsize=15)
+    ax1_2.set_title("Clusters determined by" + str(k) + '-Means', fontsize=20)
+    ax1_2.scatter(principalComponents[:, 0], principalComponents[:, 2], c=y_pred, cmap='Paired')
     ax1_2.grid()
 
     ax1_3 = fig1.add_subplot(222)
-    ax1_3.set_xlabel('Principal Component 1', fontsize=15)
+    ax1_3.set_xlabel('Principal Component 2', fontsize=15)
     ax1_3.set_ylabel('Principal Component 3', fontsize=15)
-    ax1_3.set_title("Clusters determined by DBSCAN", fontsize=20)
-    ax1_3.scatter(principalComponents[:, 0], principalComponents[:, 2], c=y_pred, cmap='Paired')
+    ax1_3.set_title("Clusters determined by" + str(k) + '-Means', fontsize=20)
+    ax1_3.scatter(principalComponents[:, 1], principalComponents[:, 2], c=y_pred, cmap='Paired')
     ax1_3.grid()
 
     ax2_3 = fig1.add_subplot(223)
-    ax2_3.set_xlabel('Principal Component 2', fontsize=15)
-    ax2_3.set_ylabel('Principal Component 3', fontsize=15)
-    ax2_3.set_title("Clusters determined by DBSCAN", fontsize=20)
-    ax2_3.scatter(principalComponents[:, 1], principalComponents[:, 2], c=y_pred, cmap='Paired')
+    ax2_3.set_xlabel('Principal Component 1', fontsize=15)
+    ax2_3.set_ylabel('Principal Component 2', fontsize=15)
+    ax2_3.set_title("Clusters determined by" + str(k) + '-Means', fontsize=20)
+    ax2_3.scatter(principalComponents[:, 0], principalComponents[:, 1], c=y_pred, cmap='Paired')
     ax2_3.grid()
 
     plt.show()
@@ -176,63 +172,23 @@ def recipes_hie(nutrition_data, algr):
     ax.grid()
     fig.show()
 
-def metrics_calcu(clusters, nutrition_data):
-    clusters = np.array(clusters)
-    clusters = clusters.reshape((len(clusters), 1))
-    data_clustered = np.append(nutrition_data, clusters, 1)
-    print(data_clustered)
-    for type in range(0,6):
-        ind = np.squeeze(np.asarray(clusters[:,-1]))==type
-        print("cluster_" + str(type))
-        subcluster = data_clustered[ind, :]
-        print("mean: " + str(np.mean(subcluster[:, 0])))
-        print("standard variance: " + str(np.std(subcluster[:,0])))
-
-def multi_ANOVA():
-    data = pd.read_csv('Mexican/Mexican_recipes_nutrition.csv')
-    chosen_nutritions_with_cal = [1, 2]
-    between = []
-    for item in chosen_nutritions_with_cal:
-        between.append(data.columns[item+1])
-    print(between)
-    aov = pg.anova(dv='calories', between=between, data=data, ss_type=3, detailed=True).round(3)
-    print(aov)
-
 def main():
-    multi_ANOVA()
-    exit()
-    #csv_file = 'Indian/Indian_recipes_nutrition.csv'
-    csv_file = 'Mexican/Mexican_recipes_nutrition.csv'
-    df = pd.read_csv(csv_file)
+    #csv_file = 'Mexican/Mexican_recipes_nutrition.csv'
+    csv_file = 'Indian/Indian_recipes_nutrition.csv'
+    k = 3
+
     chosen_nutritions_with_cal =  [0,1,2,3,4,5,6,8,9,10]
     chosen_nutritions_without_cal = [1,2,3,4,5,6,8,9,10]
-
     nutrition_data = np.genfromtxt(csv_file, delimiter=',', dtype=float, skip_header=True)
     nutrition_data = np.delete(nutrition_data, 0, 1)
-    expe_data = nutrition_data[:, chosen_nutritions_with_cal]
-    expe_data1 = nutrition_data[:, chosen_nutritions_without_cal]
+    chosen_data_with_calor = nutrition_data[:, chosen_nutritions_with_cal]
+    chosen_data_no_calor = nutrition_data[:, chosen_nutritions_without_cal]
 
-    #recipes_heatmap(nutrition_data)
-    #recipes_heatmap(expe_data)
-    recipes_heatmap(expe_data1)
+    data_statistics.linear_regression(csv_file, chosen_data_with_calor)
+    data_statistics.recipes_heatmap(nutrition_data)
 
-    #recipes_KMean(nutrition_data, 6)
-    #recipes_KMean(expe_data, 6)
-
-    clusters = recipes_KMean(expe_data1, 6)
-    metrics_calcu(clusters, expe_data)
-
-    # recipes_DBSCAN(nutrition_data)
-    # recipes_hie(nutrition_data, 'single')
-    # ks = KMean_preprocess(nutrition_data)
-    # for k in ks:
-    #     print(k)
-    #     recipes_KMean(nutrition_data, k)
-
-
-
-
-
+    clusters = recipes_KMean(chosen_data_with_calor, k)
+    data_statistics.frequency_distribution(clusters, chosen_data_with_calor, k)
 
 
 
