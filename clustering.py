@@ -173,22 +173,65 @@ def recipes_hie(nutrition_data, algr):
     fig.show()
 
 def main():
-    #csv_file = 'Mexican/Mexican_recipes_nutrition.csv'
-    csv_file = 'Indian/Indian_recipes_nutrition.csv'
     k = 3
-
     chosen_nutritions_with_cal =  [0,1,2,3,4,5,6,8,9,10]
     chosen_nutritions_without_cal = [1,2,3,4,5,6,8,9,10]
-    nutrition_data = np.genfromtxt(csv_file, delimiter=',', dtype=float, skip_header=True)
-    nutrition_data = np.delete(nutrition_data, 0, 1)
-    chosen_data_with_calor = nutrition_data[:, chosen_nutritions_with_cal]
-    chosen_data_no_calor = nutrition_data[:, chosen_nutritions_without_cal]
+    #csv_file = 'Italian/Italian_recipes_nutrition.csv'
+    #csv_file = 'Chinese/Chinese_recipes_nutrition.csv'
 
-    data_statistics.linear_regression(csv_file, chosen_data_with_calor)
-    data_statistics.recipes_heatmap(nutrition_data)
+    # csv_file = 'Italian/Italian_recipes_nutrition.csv'
+    # nutrition_data = np.genfromtxt(csv_file, delimiter=',', dtype=float, skip_header=True)
+    # nutrition_data = np.delete(nutrition_data, 0, 1)
+    # chosen_data_with_calor = nutrition_data[:, chosen_nutritions_with_cal]
 
-    clusters = recipes_KMean(chosen_data_with_calor, k)
-    data_statistics.frequency_distribution(clusters, chosen_data_with_calor, k)
+    # chosen_nutritions_with_cal =  [0,1,2,3,4,5,6,8,9,10]
+    # chosen_nutritions_without_cal = [1,2,3,4,5,6,8,9,10]
+    # nutrition_data1 = np.genfromtxt(csv_file, delimiter=',', dtype=float, skip_header=True)
+    # nutrition_data1 = np.delete(nutrition_data1, 0, 1)
+    # chosen_data_with_calor1 = nutrition_data1[:, chosen_nutritions_with_cal]
+    # chosen_data_no_calor = nutrition_data1[:, chosen_nutritions_without_cal]
+    # print(len(chosen_data_with_calor1))
+    #
+    # csv_file = 'American/American_recipes_nutrition.csv'
+    # nutrition_data2 = np.genfromtxt(csv_file, delimiter=',', dtype=float, skip_header=True)
+    # nutrition_data2 = np.delete(nutrition_data2, 0, 1)
+    # chosen_data_with_calor2 = nutrition_data2[:, chosen_nutritions_with_cal]
+    # chosen_data_no_calor2 = nutrition_data2[:, chosen_nutritions_without_cal]
+    # chosen_data_with_calor = np.vstack((chosen_data_with_calor1, chosen_data_with_calor2, chosen_data_with_calor3))
+
+
+    # csv_file = 'Error_UK/UK_recipes_nutrition.csv'
+    # chosen_nutritions_with_cal =  [0,1,2,3,4,5,6,8,9,10]
+    # chosen_nutritions_without_cal = [1,2,3,4,5,6,8,9,10]
+    # nutrition_data = np.genfromtxt(csv_file, delimiter=',', dtype=float, skip_header=True)
+    # nutrition_data = np.delete(nutrition_data, 0, 1)
+    # chosen_data_with_calor = nutrition_data[:, chosen_nutritions_with_cal]
+    # chosen_data_no_calor = nutrition_data[:, chosen_nutritions_without_cal]
+    #
+    #
+    # data_statistics.linear_regression(csv_file, chosen_data_with_calor)
+    # data_statistics.recipes_heatmap(nutrition_data, method='complete')
+    #for index in range(1, 10):
+        #data_statistics.correlation_diagram_2(csv_file, chosen_data_with_calor, index)
+        #data_statistics.spearman_correlation(csv_file, chosen_data_with_calor, index)
+
+    # clusters = recipes_KMean(chosen_data_with_calor, k)
+    #data_statistics.frequency_distribution(clusters, chosen_data_with_calor, k)
+    # for index in range(1,10):
+    #     data_statistics.spearman_correlation(chosen_data_with_calor, 0, index)
+    # for index in [2, 5, 6, 7]:
+    #     data_statistics.visualization_spearman_3D(chosen_data_with_calor, 1, index)
+
+    csv_file = "all_recipes_nutrients_info.csv"
+    chosen_data_with_calor  = np.genfromtxt(csv_file, delimiter=',', dtype=float, skip_header=True)
+    chosen_data_with_calor = np.delete(chosen_data_with_calor, 0, 0)
+    # clusters = recipes_KMean(chosen_data_with_calor, k)
+    # data_statistics.frequency_distribution(clusters, chosen_data_with_calor, k)
+    # data_statistics.linear_regression(csv_file, chosen_data_with_calor)
+    # for index in range(1,10):
+    #      data_statistics.spearman_correlation(chosen_data_with_calor, 0, index)
+    for index in [2]:
+        data_statistics.visualization_spearman_3D(chosen_data_with_calor, 1, index)
 
 
 

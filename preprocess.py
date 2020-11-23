@@ -4,7 +4,7 @@ import glob
 import json
 import os
 import shutil
-
+import numpy as np
 import pandas as pd
 
 
@@ -141,17 +141,38 @@ def nutrition_json2cvs(country):
             with open( country + '/' +country+'_integration_all_calo.json', 'w') as f:
                 json.dump(all_recipes_calo, f)
 
+def combination_csv():
+    chosen_data_with_calor = [['calories','TotalFat','SaturatedFat','Cholesterol','Sodium','Potassium','TotalCarbohydrates','Protein','Sugars', 'VitaminA']]
+
+    os.system("find . -name *_recipes_nutrition.csv > re_nutri_path.txt")
+    # try:
+    #     os.mkdir()
+    # except:
+    #     print('this folder exists')
+    with open("re_nutri_path.txt") as f:
+        paths = f.readlines()
+    for path in paths:
+        csv_file = path.split('\n')[0]
+        chosen_nutritions_with_cal = [0, 1, 2, 3, 4, 5, 6, 8, 9, 10]
+        chosen_nutritions_without_cal = [1, 2, 3, 4, 5, 6, 8, 9, 10]
+        nutrition_data1 = np.genfromtxt(csv_file, delimiter=',', dtype=float, skip_header=True)
+        nutrition_data1 = np.delete(nutrition_data1, 0, 1)
+        chosen_data_with_calor_one_country = nutrition_data1[:, chosen_nutritions_with_cal]
+        chosen_data_with_calor = np.vstack((chosen_data_with_calor, chosen_data_with_calor_one_country))
+    pd.DataFrame(chosen_data_with_calor).to_csv("all_recipes_nutrients_info.csv", index=False)
+    print(1)
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--country", help="country information", required=True)
-    parser.add_argument("-n", "--nutrition", help="nutrition information", default=False)
-    country = parser.parse_args().country
-    isNutrition = parser.parse_args().nutrition
-    if isNutrition == False:
-        extract_text_files(country)
-    else:
-        nutrition_json2cvs(country)
+    combination_csv()
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument("-c", "--country", help="country information", required=True)
+    # parser.add_argument("-n", "--nutrition", help="nutrition information", default=False)
+    # country = parser.parse_args().country
+    # isNutrition = parser.parse_args().nutrition
+    # if isNutrition == False:
+    #     extract_text_files(country)
+    # else:
+    #     nutrition_json2cvs(country)
 
 if __name__ == '__main__':
     main()
