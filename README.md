@@ -12,4 +12,4 @@ This repository is used to group the similar recipes and find the patterns withi
 - Extract the nutrients information from cuisine text files.
 	* `python preprocess -c [country name] -n True`
 - Group similar recipes using 3-Means method.
-	* `python clustering.py'
+	* `python clustering.py`
