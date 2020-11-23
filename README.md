@@ -7,4 +7,9 @@ This repository is used to group the similar recipes and find the patterns withi
 - data_statistics.py: This module is used to analyze and visualize the relationship between each nutrient. For instance, there are linear regression, Spearman correlation coefficience, mean, and standard deviation. Headmap, density curve, and 3D scatter plots are employed to show their result.
 
 ## Usage
-	* `python crawler_excel.py`
+- Extract the text files for one country from cuisine folders with images and text files.
+	* `python preprocess -c [country name]`
+- Extract the nutrients information from cuisine text files.
+	* `python preprocess -c [country name] -n True`
+- Group similar recipes using 3-Means method.
+	* `python clustering.py'
